@@ -38,3 +38,5 @@ LAYOUTS_HAS_RGB = no
 # Disable unsupported hardware
 AUDIO_SUPPORTED = no
 BACKLIGHT_SUPPORTED = no
+TAP_DANCE_ENABLE = yes
+LTO_ENABLE = yes
