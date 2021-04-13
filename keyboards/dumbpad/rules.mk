@@ -26,11 +26,16 @@ NKRO_ENABLE = no            # USB Nkey Rollover
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality on B7 by default
 RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
 MIDI_ENABLE = no            # MIDI support
-UNICODE_ENABLE = no         # Unicode
+
 BLUETOOTH_ENABLE = no       # Enable Bluetooth with the Adafruit EZ-Key HID
 AUDIO_ENABLE = no           # Audio output on port C6
 FAUXCLICKY_ENABLE = no      # Use buzzer to emulate clicky switches
+# UNICODEMAP_ENABLE = yes #added to use emojis - wansyazlina
 
 ENCODER_ENABLE = yes
 MOUSEKEY_ENABLE = yes
 KEY_LOCK_ENABLE = yes
+TAP_DANCE_ENABLE = yes #added for tapdance - wansyazlina
+LTO_ENABLE = yes #added to reduce firmware size , before this is was 96% - wansyazlina
+
+

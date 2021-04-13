@@ -50,14 +50,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Rotary encoder */
 // D1, D0 is right encoder
 // D4, B2 is left encoder
-#define ENCODERS_PAD_A { D4 } 
+#define ENCODERS_PAD_A { D4 }
 #define ENCODERS_PAD_B { B2 }
 
 /* LED layer indicators */
 // These are the 2 on-board LED at B0 and D5 (working )
 //#define LAYER_INDICATOR_LED_0 B0
 //#define LAYER_INDICATOR_LED_1 D5
-// Using external LED 
+// Using external LED
 #define LAYER_INDICATOR_LED_0 B6 // Red
 //#define LAYER_INDICATOR_LED_0 B1 // Green for Andy
 #define LAYER_INDICATOR_LED_1 B1 // Blue or Green
@@ -93,7 +93,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define BACKLIGHT_BREATHING
 // #define BACKLIGHT_LEVELS 3
 
-// Arduino D12 
+// Arduino D12
 #define RGB_DI_PIN B3
 #ifdef RGB_DI_PIN
   #define RGBLED_NUM 4
@@ -245,3 +245,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* Bootmagic Lite key configuration */
 // #define BOOTMAGIC_LITE_ROW 0
 // #define BOOTMAGIC_LITE_COLUMN 0
+//added for tapdance - wansyazlina
+#define TAPPING_TERM 200
