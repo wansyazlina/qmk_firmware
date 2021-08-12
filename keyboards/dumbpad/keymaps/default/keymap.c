@@ -15,8 +15,10 @@
  */
 #include QMK_KEYBOARD_H
 
-#define _BASE 0
-#define _SUB  1
+#define _BASE     0
+#define _SUB      1
+#define _DBG      2
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /*
@@ -24,46 +26,62 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    /-----------------------------------------------------`
    |             |    7    |    8    |    9    |  Bkspc  |
    |             |---------|---------|---------|---------|
-   |             |    4    |    5    |    6    |   Esc   |
+   |             |    4    |    5    |    6    |  +      |
    |             |---------|---------|---------|---------|
-   |             |    1    |    2    |    3    |   Tab   |
+   |             |    1    |    2    |    3    |  -      |
    |-------------|---------|---------|---------|---------|
-   | Left mouse  | TT(SUB) |    0    |    .    |  Enter  |
+   | Play/Pause  | TT(_SUB)|    0    |    .    |  =      |
    \-----------------------------------------------------'
   */
   [_BASE] = LAYOUT(
-                   KC_7,      KC_8,    KC_9,     KC_BSPC, 
-                   KC_4,      KC_5,    KC_6,     KC_ESC, 
-                   KC_1,      KC_2,    KC_3,     KC_TAB, 
-    KC_BTN1,       TT(_SUB),  KC_0,    KC_DOT,   KC_ENTER
+                   KC_P7,    KC_P8,  KC_P9,   KC_BSPC,
+                   KC_P4,    KC_P5,  KC_P6,   KC_KP_PLUS,
+                   KC_P1,    KC_P2,  KC_P3,   KC_KP_MINUS,
+    KC_MPLY,       TT(_SUB), KC_P0,  KC_PDOT, KC_EQL
   ),
   /*
         SUB LAYER
    /-----------------------------------------------------`
-   |             |         |         |         |  Reset  |
+   |             |         |RGB_M_SW | RGB_M_T | Numlock |
    |             |---------|---------|---------|---------|
-   |             |         |         |         |    +    |
+   |             |         | RGB_M_B | RGB_M_R | RGB_MOD |
    |             |---------|---------|---------|---------|
-   |             |         |         |         |    -    |
+   |             |         | RGB_HUI | RGB_HUD | RGB RMOD|
    |-------------|---------|---------|---------|---------|
-   |    LOCK     |         |         |         |    =    |
+   |  MO(_DBG)   |         | RGB_VAI | RGB_VAD | RGB_TOG |
    \-----------------------------------------------------'
   */
   [_SUB] = LAYOUT(
-                 _______,     _______,     _______,      RESET, 
-                 _______,     _______,     _______,      KC_KP_PLUS, 
-                 _______,     _______,     _______,      KC_KP_MINUS, 
-    KC_LOCK,     _______,     _______,     _______,      KC_EQL
+                 _______,     RGB_M_SW,    RGB_M_T,     KC_NLCK,
+                 _______,     RGB_M_B,     RGB_M_R,     RGB_MOD,
+                 _______,     RGB_HUI,     RGB_HUD,     RGB_RMOD,
+    MO(_DBG),    _______,     RGB_VAI,     RGB_VAD,      RGB_TOG
+  ),
+  /*
+        DEBUG LAYER
+   /-----------------------------------------------------`
+   |             |         |         |         |  Reset  |
+   |             |---------|---------|---------|---------|
+   |             |         |         |         |         |
+   |             |---------|---------|---------|---------|
+   |             |         |         |         |         |
+   |-------------|---------|---------|---------|---------|
+   |             |         |         |         |         |
+   \-----------------------------------------------------'
+  */
+  [_DBG] = LAYOUT(
+                 _______,     _______,     _______,      RESET,
+                 _______,     _______,     _______,      _______,
+                 _______,     _______,     _______,      _______,
+    _______,     _______,     _______,     _______,      _______
   ),
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // If console is enabled, it will print the matrix position and status of each key pressed
-/*
-#ifdef CONSOLE_ENABLE
-    uprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed);
-#endif 
-*/
+// #ifdef CONSOLE_ENABLE
+//     uprintf("KL: kc: %u, col: %u, row: %u, pressed: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed);
+// #endif
   return true;
 }
 
@@ -87,35 +105,92 @@ void led_set_user(uint8_t usb_led) {
 
 }
 
+
 void encoder_update_user(uint8_t index, bool clockwise) {
   /*  Custom encoder control - handles CW/CCW turning of encoder
-   *  Default behavior:
-   *    main layer:
-   *       CW: move mouse right
-   *      CCW: move mouse left
-   *    other layers:
-   *       CW: = (equals/plus - increase slider in Adobe products)
-   *      CCW: - (minus/underscore - decrease slider in adobe products)
+   *  Cusotom behavior:
    */
+  // left encoder
   if (index == 0) {
     switch (biton32(layer_state)) {
       case _BASE:
-        // main layer - move mouse right (CW) and left (CCW)
+        // main layer : PgDN and PgUP
         if (clockwise) {
-          tap_code(KC_MS_R);
+          writePin(LAYER_INDICATOR_LED_1, true);
+          wait_ms(50);
+          writePin(LAYER_INDICATOR_LED_1, false);
+          //tap_code(KC_PGUP);
+          tap_code(KC_MS_WH_UP);
         } else {
-          tap_code(KC_MS_L);
+          writePin(LAYER_INDICATOR_LED_0, true);
+          wait_ms(50);
+          writePin(LAYER_INDICATOR_LED_0, false);
+          //tap_code(KC_PGDN);
+          tap_code(KC_MS_WH_DOWN);
+        }
+        break;
+
+      case _SUB:
+        // sub layer : Vol + /-
+        // built-in LED is reverse, false is on, true is off
+        if (clockwise) {
+          writePin(LAYER_INDICATOR_LED_2, false);
+          wait_ms(50);
+          writePin(LAYER_INDICATOR_LED_2, true);
+          tap_code(KC_VOLU);
+        } else {
+          writePin(LAYER_INDICATOR_LED_3, false);
+          wait_ms(50);
+          writePin(LAYER_INDICATOR_LED_3, true);
+          tap_code(KC_VOLD);
         }
         break;
 
       default:
-        // other layers - =/+ (quals/plus) (CW) and -/_ (minus/underscore) (CCW)
+        // any other layer (shouldn't exist..) - volume up (CW) and down (CCW)
         if (clockwise) {
-          tap_code(KC_EQL);
+          tap_code(KC_MS_WH_UP);
         } else {
-          tap_code(KC_MINS);
+          tap_code(KC_MS_WH_DOWN);
         }
         break;
     }
   }
+  /* disable 2nd encoder
+  else if (index == 1) {
+    // right encoder
+    switch (biton32(layer_state)) {
+      case _BASE:
+        // main layer - volume up (CW) and down (CCW)
+        if (clockwise) {
+          writePin(LAYER_INDICATOR_LED_0, true);
+          wait_ms(50);
+          writePin(LAYER_INDICATOR_LED_0, false);
+          tap_code(KC_VOLU);
+        } else {
+          tap_code(KC_VOLD);
+        }
+        break;
+      case _SUB:
+        // sub layer - next track (CW) and previous track (CCW)
+        if (clockwise) {
+          writePin(LAYER_INDICATOR_LED_0, true);
+	        wait_ms(50);
+	        writePin(LAYER_INDICATOR_LED_0, false);
+          tap_code(KC_WH_U);
+        } else {
+          tap_code(KC_WH_D);
+        }
+        break;
+      default:
+        // any other layer (shouldn't exist..) - volume up (CW) and down (CCW)
+        if (clockwise) {
+          tap_code(KC_VOLU);
+        } else {
+          tap_code(KC_VOLD);
+        }
+        break;
+    }
+  }
+ */
 }

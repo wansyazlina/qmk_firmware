@@ -37,5 +37,5 @@ MOUSEKEY_ENABLE = yes
 KEY_LOCK_ENABLE = yes
 TAP_DANCE_ENABLE = yes #added for tapdance - wansyazlina
 LTO_ENABLE = yes #added to reduce firmware size , before this is was 96% - wansyazlina
-
+VIA_ENABLE = yes
 
