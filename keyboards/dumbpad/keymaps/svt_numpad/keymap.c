@@ -47,10 +47,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    \-----------------------------------------------------'
   */
   [_BASE] = LAYOUT(
-                   KC_P7,    KC_P8,  KC_P9,   KC_BSPC,
-                   KC_P4,    KC_P5,  KC_P6,   KC_KP_PLUS,
-                   KC_P1,    KC_P2,  KC_P3,   KC_KP_MINUS,
-    KC_MPLY,       TD(DIFF_LAYR), KC_P0,  KC_PDOT, KC_EQL
+                   KC_P7,     KC_P8,   KC_P9,    KC_BSPC,
+                   KC_P4,     KC_P5,   KC_P6,    KC_KP_PLUS,
+                   KC_P1,     KC_P2,   KC_P3,    KC_KP_MINUS,
+    KC_MPLY,    TD(DIFF_LAYR),KC_P0,   KC_PDOT,  KC_EQL
   ),
   /*
         SUB LAYER
@@ -65,17 +65,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    \-----------------------------------------------------'
   */
   [_SUB] = LAYOUT(
-                 _______,     RGB_M_SW,    RGB_M_T,     KC_NLCK,
-                 _______,     RGB_M_B,     RGB_M_R,     RGB_MOD,
-                 _______,     RGB_HUI,     RGB_HUD,     RGB_RMOD,
-    MO(_MEDIA),    TD(DIFF_LAYR),     RGB_VAI,     RGB_VAD,      RGB_TOG
+                 _______,     RGB_M_SW,  RGB_M_T,   KC_NLCK,
+                 _______,     RGB_M_B,   RGB_M_R,   RGB_MOD,
+                 _______,     RGB_HUI,   RGB_HUD,   RGB_RMOD,
+    MO(_MEDIA), TD(DIFF_LAYR),RGB_VAI,   RGB_VAD,   RGB_TOG
   ),
   /*
         MEDIA & CTRL LAYER
    /-----------------------------------------------------`
-   |             |shareSC  |showVideo| string  |         |
+   |             |shareSC  |showVideo|rmotectrl|         |
    |             |---------|---------|---------|---------|
-   |             |         |         |unmute   |leaveMeet|
+   |             |prevTrack|nextTrack|unmute   |leaveMeet|
    |             |---------|---------|---------|---------|
    |             | Chrome  | Save    | Redo    | Undo    |
    |-------------|---------|---------|---------|---------|
@@ -83,11 +83,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    \-----------------------------------------------------'
   */
   [_MEDIA] = LAYOUT(
-                  RCS(KC_D),    RCS(KC_V),           BYE,       XXXXXXX,
-                  KC_MPRV ,     KC_MNXT   ,   LCTL(KC_M),    LCTL(KC_L),
-                  LCA(KC_I),      LCTL(KC_S),   LCTL(KC_Y),    LCTL(KC_Z),
-    _______,     TD(DIFF_LAYR), LCTL(KC_X) ,   LCTL(KC_V),    LCTL(KC_C)
+               LALT(KC_S),  LALT(KC_V),     LSA(KC_R),  KC_ENT,
+                KC_MPRV ,    KC_MNXT,   LALT(KC_A),  LALT(KC_Q),
+               LCA(KC_I), LCTL(KC_S),   LCTL(KC_Y),  LCTL(KC_Z),
+    _______,TD(DIFF_LAYR), LCTL(KC_X),  LCTL(KC_V),  LCTL(KC_C)
   ),
+
+  //                RCS(KC_D),  RCS(KC_V),          BYE,      KC_ENT,
+ //                  KC_MPRV ,    KC_MNXT,   LCTL(KC_M),  LCTL(KC_L),
 
    /*
         GIT COMMANDS AND EMOTICONs
@@ -102,10 +105,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    \-----------------------------------------------------'
   */
   [_GITEMO] = LAYOUT(
-                RALT(KC_A),   RALT(KC_B),   RALT(KC_C) ,   RALT(KC_D),
-                RALT(KC_E),    RALT(KC_F),   RALT(KC_G),   RALT(KC_H),
-                GITPUSH,          GITADD,       _______,    GITCOMMIT,
-    _______,     _______,       _______,        _______,      _______
+            RALT(KC_A),  RALT(KC_B),   RALT(KC_C),      KC_ENT,
+            RALT(KC_D),  RALT(KC_E),   RALT(KC_F),  RALT(KC_G),
+               GITPUSH,      GITADD,    GITSTATUS,   GITCOMMIT,
+    _______,   _______,   _______,      _______,     _______
   ),
 };
 
